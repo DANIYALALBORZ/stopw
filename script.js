@@ -30,34 +30,41 @@ btn[2].addEventListener('click', (e) => {
     document.getElementById('s').innerHTML = s
     document.getElementById('m').innerHTML = m
     document.getElementById('h').innerHTML = h
+    clearLaps()
 })
 let flag = 1
 let btnLi = 0
 btn[3].addEventListener('click', () => {
 
     if (btn[0].getAttribute('data-status') == 'on') {
+        if (lapsCleared) {
+            btnLi = 0;
+            flag = 1;
+            lapsCleared = false;
+            console.log(lapsCleared);
+        }
+        if (btnLi == 0) {
+            let liBtn = document.createElement('li');
+            liBtn.style.marginTop = '8px';
+            liBtn.style.borderBottom = 0;
+            liBtn.innerHTML = '<button>CLEAR LAPS</button>';
+            ul.appendChild(liBtn);
+            liBtn.addEventListener('click', () => {
+                clearLaps()
+            })
+        }
         let li = document.createElement('li')
         // laps.style.opacity = '1'
-
-        if (btnLi == 0) {
-            li.innerHTML = `
-            <span>${flag + '.'}</span>
-            ${document.getElementById('h').innerHTML}:${document.getElementById('m').innerHTML}:${document.getElementById('s').innerHTML}:${document.getElementById('ms').innerHTML}
-            <button>CLEAR LAPS</button>
+        li.innerHTML = `
+        <span>${flag + '.'}</span>
+        ${document.getElementById('h').innerHTML}:${document.getElementById('m').innerHTML}:${document.getElementById('s').innerHTML}:${document.getElementById('ms').innerHTML}
         `
-        } else {
-            li.innerHTML = `
-            <span>${flag + '.'}</span>
-            ${document.getElementById('h').innerHTML}:${document.getElementById('m').innerHTML}:${document.getElementById('s').innerHTML}:${document.getElementById('ms').innerHTML}
-        `
-        }
         btnLi++
 
         // btLi.style.marginTop = mT + '15px'
-        ul.appendChild(li)
+        ul.prepend(li)
         flag++
         let btLi = document.querySelector('ul>li>button')
-        console.log(btLi);
 
         // console.log(step);
         // console.log(li);
@@ -112,4 +119,13 @@ function myCounter() {
             }
         }
     }
+}
+
+let lapsCleared = false;
+function clearLaps() {
+    let lapsList = document.querySelectorAll('ul>li');
+    lapsList.forEach(item => {
+        item.remove();
+    })
+    lapsCleared = true;
 }
